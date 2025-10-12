@@ -12,7 +12,7 @@ Description:
     When running on mobile platforms, custom databases
     are disabled and the default database is used.
 
-    Codes and Names are based off lists from Ingles Markets.
+    Codes and Names are based off data from Ingles Markets.
     
 Author: Michael Onate
 Date: 9-2-2025
@@ -20,9 +20,6 @@ Version: 1.0
 """
 
 # TODO 
-# 1 - Implement all wrappers                                            (in progress)
-# 2 - Call wrappers with menu items                                    (in progress)
-# 3 - Implement all menu items
 # 4 - Save json (if all exists and its good) before program close
 # 5 - Test all cases
 # 6 - List importing
@@ -92,7 +89,6 @@ def whisper(prompt: str, canCancel: bool=True, numeric: bool=False):
                 continue
             return userInput
 
-# TODO Implement search engine, Eagle.
 def eagle(query):
     """
     Lookup helper that searches dictionaries with exact, partial, or fuzzy matching.
@@ -192,6 +188,22 @@ def initData():
         dbCodeToName = defaultCodeToName
         dbNameToCode = defaultNameToCode
 
+def saveDatabases():
+    """Writes the current database dictionaries to JSON files, if custom data is enabled."""
+    global enableCustomData, dbCodeToName, dbNameToCode
+
+    if not enableCustomData:
+        return  # Do nothing
+    
+    try:
+        with open('codeToName.json', 'w') as f:
+            json.dump(dbCodeToName, f, indent=2)
+        with open('nameToCode.json', 'w') as s:
+            json.dump(dbNameToCode, s, indent=2)
+        print("Databases saved successfully.")
+    except Exception as e:
+        print(f"Error saving database: {e}")
+
 
 # ===================== USER ACTION FUNCTIONS =====================
 
@@ -227,6 +239,9 @@ def databaseAdd():
         dbCodeToName[query_code] = query_name
         dbNameToCode[query_name] = query_code
         print(f"=== Added item: {query_code} - {query_name} ===")
+        if enableCustomData:
+            saveDatabases()
+        print(f"JSON files updated Successfully!")
     else:
         print("Add operation cancelled.")
 
@@ -246,6 +261,9 @@ def databaseRemove():
         if name in dbNameToCode:
             del dbNameToCode[name]
         print(f"Removed item: {user_input} - {name}")
+        if enableCustomData:
+            saveDatabases()
+        print(f"JSON files updated Successfully!")
         return
     # Try as name
     if user_input in dbNameToCode:
@@ -258,6 +276,9 @@ def databaseRemove():
         if code in dbCodeToName:
             del dbCodeToName[code]
         print(f"Removed item: {code} - {user_input}")
+        if enableCustomData:
+            saveDatabases()
+        print(f"JSON files updated Successfully!")
         return
     print("Item not found.")
 
@@ -305,6 +326,9 @@ def databaseEditEntry():
         code = new_code_str
 
     print(f"Updated item: {code} - {name}")
+    if enableCustomData:
+        saveDatabases()
+        print(f"JSON files updated Successfully!")
 
 
 
@@ -376,7 +400,10 @@ def mainMenu() -> None:
             action = menu_options[userInput][1]
             if userInput == 6:  # Quit option
                 isRunning = False
-                print("NOTE: Database changes were discarded. Exiting program.")
+                if enableCustomData:
+                    saveDatabases()
+                    print(f"Syncing JSON files...")
+                print("Goodbye!")
             problem_child(action)
         else:
             print("Invalid option. Please try again.")

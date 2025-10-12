@@ -58,7 +58,7 @@ def problem_child(action_function):     #Used in database modification cmds
     try:
         action_function()
     except (KeyError, ValueError) as e:
-        print(f"Whoops: {e}")
+        print(f"Error: {e}")
         return
 
 
@@ -164,7 +164,6 @@ def initData():
                 dbCodeToName = json.load(f)
             with open('nameToCode.json', 'r') as s:
                 dbNameToCode = json.load(s)
-            dbprint("Loaded custom database...\n")
         elif not code_file_exists and not name_file_exists:
             print("Welcome to Produce Lookup Tool!\n")
             print("Custom databases allow you to add, remove, and modify item codes and names to \nyour specifications. These files are stored in the same folder as this program.\n")
@@ -213,7 +212,7 @@ def searchItem():
 #2 - Add Item
 def databaseAdd():
     global dbCodeToName, dbNameToCode
-    query_name = whisper("Enter new item name (or 'cancel'): ", True, False)
+    query_name = whisper("ADD: Enter new item name (or 'cancel'): ", True, False)
     query_code = whisper("Enter new item code (or 'cancel'): ", True, True)
 
     # Prevent duplicates
@@ -227,7 +226,7 @@ def databaseAdd():
     if query_name and query_code:
         dbCodeToName[query_code] = query_name
         dbNameToCode[query_name] = query_code
-        print(f"Added new item: {query_code} - {query_name}")
+        print(f"=== Added item: {query_code} - {query_name} ===")
     else:
         print("Add operation cancelled.")
 
@@ -235,7 +234,7 @@ def databaseAdd():
 #3 - Remove item
 def databaseRemove():
     global dbCodeToName, dbNameToCode
-    user_input = whisper("Enter item code or exact name to remove (or 'cancel'): ", True, False)
+    user_input = whisper("REMOVE: Enter item code or exact name to remove (or 'cancel'): ", True, False)
     # Try as code
     if user_input in dbCodeToName:
         name = dbCodeToName[user_input]
@@ -265,8 +264,48 @@ def databaseRemove():
 
 #4 - Edit item
 def databaseEditEntry():
-    # Todo: Implement edit function
-    pass
+    global dbCodeToName, dbNameToCode
+    user_input = whisper("EDIT: Enter item code or exact name to edit (or 'cancel'): ", True, False)
+
+    # Set target item
+    if user_input in dbCodeToName:
+        code = user_input
+        name = dbCodeToName[code]
+    elif user_input in dbNameToCode:
+        name = user_input
+        code = dbNameToCode[name]
+    else:
+        print("Item not found.")
+        return
+
+    # Request new data
+    print(f"Editing item: {code} - {name}")
+    new_name = whisper(f"Enter new name (Old name: '{name}'): ", True, False)
+    new_code = whisper(f"Enter new code (Old code: '{code}'): ", True, True)
+
+    # Validate and update name
+    if new_name and new_name != name:
+        if new_name in dbNameToCode:
+            print("That name already exists.")
+            return
+        del dbNameToCode[name]
+        dbNameToCode[new_name] = code
+        dbCodeToName[code] = new_name
+        name = new_name
+
+    # Validate and update code
+    if new_code and str(new_code) != code:
+        new_code_str = str(new_code)
+        if new_code_str in dbCodeToName:
+            print("That code already exists.")
+            return
+        del dbCodeToName[code]
+        dbCodeToName[new_code_str] = name
+        dbNameToCode[name] = new_code_str
+        code = new_code_str
+
+    print(f"Updated item: {code} - {name}")
+
 
 
 #5 - Show all
@@ -337,7 +376,7 @@ def mainMenu() -> None:
             action = menu_options[userInput][1]
             if userInput == 6:  # Quit option
                 isRunning = False
-                print("Items not saved. Exiting program.")
+                print("NOTE: Database changes were discarded. Exiting program.")
             problem_child(action)
         else:
             print("Invalid option. Please try again.")

@@ -20,7 +20,6 @@ A simple and versatile tool to lookup grocery produce codes (PLU). Search, add, 
 ### Installation
 
 1. Clone the repository:
-   ```bash git clone [https://github.com/michaelona/produce-lookup-tool.git](https://github.com/michaelona/produce-lookup-tool.git)```
 2. Navigate into the directory:
    ```cd produce-lookup-tool```
 3. Run the program:

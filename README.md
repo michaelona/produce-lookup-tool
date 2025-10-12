@@ -1,4 +1,4 @@
-# Produce Code Finder
+# Produce Lookup Tool
 
 A simple and versatile tool to lookup grocery produce codes (PLU). Search, add, edit, or remove items with ease.
 

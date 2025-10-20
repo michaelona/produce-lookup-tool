@@ -1,6 +1,6 @@
 # Produce Lookup Tool
 
-An easy tool to lookup common grocery produce codes (PLU). Search, add, edit, or remove items with custom databases.
+A simple and easy CLI tool to lookup common grocery produce codes (PLU). Search, add, edit, or remove entries with custom databases for your own items.
 
 ---
 

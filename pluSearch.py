@@ -19,12 +19,6 @@ Date: 9-2-2025
 Version: 1.0
 """
 
-# TODO 
-# 5 - Test all cases
-# 6 - List importing
-
-
-
 # IMPORT STATEMENTS
 import json, platform, difflib, os
 

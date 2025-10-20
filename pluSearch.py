@@ -597,7 +597,7 @@ def initData():
             with open('nameToCode.json', 'r') as s:
                 dbNameToCode = json.load(s)
         elif not code_file_exists and not name_file_exists:
-            print("Welcome to Produce Lookup Tool!\n")
+            print("\nWelcome to Produce Lookup Tool!\n")
             print("Custom databases allow you to add, remove, and modify item codes and names to \nyour specifications. These files are stored in the same folder as this program.\n")
             userResponse = input("Would you like to create a new set with default values? (y/n): ").strip().lower()
             if userResponse == "y":
@@ -614,7 +614,8 @@ def initData():
                 dbCodeToName = defaultCodeToName
                 dbNameToCode = defaultNameToCode
         else:
-            print("Inconsistent database state: Only one of codeToName.json or nameToCode.json exists.")
+            print("\n\nInc")
+            print("nconsistent database state: Only one of codeToName.json or nameToCode.json exists.")
             print("Please delete the existing file(s) so both can be created together with defaults.\n")
             print("Proceeding with default values.")
             enableCustomData = False
@@ -792,6 +793,19 @@ def display_all_items():
     print()
     print()
 
+#6 - Reset to Default
+def resetToDefaults():
+    """Resets both codeToName.json and nameToCode.json to default values."""
+    global dbCodeToName, dbNameToCode
+    confirm = input("Are you sure you want to reset both databases to default values? (y/n): ").strip().lower()
+    if confirm != 'y':
+        print("Reset cancelled.")
+        return
+    dbCodeToName = defaultCodeToName.copy()
+    dbNameToCode = defaultNameToCode.copy()
+    if enableCustomData:
+        saveDatabases()
+    print("Databases reset to default values.")
 
 
 
@@ -800,6 +814,8 @@ def display_all_items():
 
 
 # Main Menu Loop
+
+
 def mainMenu() -> None:
     """
     Displays menu items based on enableCustomData flag and handles user navigation.
@@ -815,12 +831,13 @@ def mainMenu() -> None:
         3: ("Remove item", databaseRemove),
         4: ("Edit item", databaseEditEntry),
         5: ("Show All", display_all_items),
-        6: ("Quit", lambda: print("Goodbye!"))
+        6: ("Reset to Defaults", resetToDefaults),
+        7: ("Quit", lambda: print("Goodbye!"))
     }
 
     # Filter options for Limited Mode
     if not enableCustomData:
-        menu_options = {key: value for key, value in menu_options.items() if key in [1, 5, 6]}
+        menu_options = {key: value for key, value in menu_options.items() if key in [1, 5, 7]}
 
     def display_menu():
         """
@@ -837,7 +854,7 @@ def mainMenu() -> None:
         userInput = whisper("Enter an option: ", False, True)
         if userInput in menu_options:
             action = menu_options[userInput][1]
-            if userInput == 6:  # Quit option
+            if userInput == 7:  # Quit option
                 isRunning = False
                 if enableCustomData:
                     saveDatabases()

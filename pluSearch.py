@@ -7,7 +7,7 @@ Description:
     and get the corresponding match.
 
     Custom databases can be created or imported on Windows/Mac/Linux platforms
-    and include add, update, and delete funcitons to manage custom databases.
+    and include add, update, and delete functions to manage custom databases.
 
     When running on mobile platforms, custom databases
     are disabled and the default database is used.
@@ -15,8 +15,8 @@ Description:
     Codes and Names are based off data from Ingles Markets.
     
 Author: Michael Onate
-Date: 9-2-2025
-Version: 1.0
+Date: 10-20-2025
+Version: 1.1
 """
 
 # IMPORT STATEMENTS
@@ -599,7 +599,7 @@ def initData():
         elif not code_file_exists and not name_file_exists:
             print("\nWelcome to Produce Lookup Tool!\n")
             print("Custom databases allow you to add, remove, and modify item codes and names to \nyour specifications. These files are stored in the same folder as this program.\n")
-            userResponse = input("Would you like to create a new set with default values? (y/n): ").strip().lower()
+            userResponse = input("Create a new database with default values? (y/n): ").strip().lower()
             if userResponse == "y":
                 with open('codeToName.json', 'w') as f:
                     json.dump(defaultCodeToName, f, indent=2)
@@ -614,8 +614,7 @@ def initData():
                 dbCodeToName = defaultCodeToName
                 dbNameToCode = defaultNameToCode
         else:
-            print("\n\nInc")
-            print("nconsistent database state: Only one of codeToName.json or nameToCode.json exists.")
+            print("Inconsistent database state: Only one of codeToName.json or nameToCode.json exists.")
             print("Please delete the existing file(s) so both can be created together with defaults.\n")
             print("Proceeding with default values.")
             enableCustomData = False
@@ -681,7 +680,7 @@ def databaseAdd():
         print(f"=== Added item: {query_code} - {query_name} ===")
         if enableCustomData:
             saveDatabases()
-        print(f"JSON files updated Successfully!")
+        print(f"JSON files updated successfully!")
     else:
         print("Add operation cancelled.")
 
@@ -703,7 +702,7 @@ def databaseRemove():
         print(f"Removed item: {user_input} - {name}")
         if enableCustomData:
             saveDatabases()
-        print(f"JSON files updated Successfully!")
+        print(f"JSON files updated successfully!")
         return
     # Try as name
     if user_input in dbNameToCode:
@@ -718,7 +717,7 @@ def databaseRemove():
         print(f"Removed item: {code} - {user_input}")
         if enableCustomData:
             saveDatabases()
-        print(f"JSON files updated Successfully!")
+        print(f"JSON files updated successfully!")
         return
     print("Item not found.")
 
@@ -768,7 +767,7 @@ def databaseEditEntry():
     print(f"Updated item: {code} - {name}")
     if enableCustomData:
         saveDatabases()
-        print(f"JSON files updated Successfully!")
+        print(f"JSON files updated successfully!")
 
 
 

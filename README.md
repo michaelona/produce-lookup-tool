@@ -22,7 +22,7 @@ A simple and easy CLI tool to lookup common grocery produce codes (PLU). Search,
 2. Navigate into the directory:
    ```cd produce-lookup-tool```
 3. Run the program:
-   ```python pluSearch.py``` or ```python3 pluSearch.py```
+   ```python pluSearch.py```
 
 ---
 

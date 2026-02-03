@@ -28,12 +28,12 @@ A simple and easy CLI tool to lookup common grocery produce codes (PLU). Search,
 
 ## ⌨️ Usage
 - Follow the main menu functions to search, add, edit, remove, or display items.
-- First-time users on Windows/macOS can choose to create a custom database. Mobile users are restricted to the default dataset.
+- First-time users on Windows/macOS can choose to create a custom database. Non-desktop users are restricted to the default dataset.
 
 #
 
 ### **Main Menu Functions:**
-(\* = Available on mobile)
+(\* = Available on non-desktop platforms)
 1. **Search\*** — Searches the database after entering a produce name or PLU code. Supports partial and fuzzy matches. Returns the 
 
 2. **Add Item** — Adds a new item entry given a name or PLU code. Checks for duplicates before writing to the database.
